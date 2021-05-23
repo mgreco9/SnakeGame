@@ -1,4 +1,5 @@
 ﻿using System;
+using CommandLine;
 
 namespace Snake
 {
@@ -8,14 +9,33 @@ namespace Snake
     /// </summary>
     public static class Program
     {
+        private static string _controllerOpt;
+
+        public class Options
+        {
+            [Option('c', "control", Required = false, HelpText = "Define which AI to use")]
+            public string AIName { get; set; }
+        }
+
+        static void RunOptions(Options opts)
+        {
+            _controllerOpt = opts.AIName;
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            using (var game = new MainGame())
-                game.Run();
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(RunOptions);
+
+            var game = new MainGame()
+            {
+                controllerOpt = _controllerOpt
+            };
+            game.Run();
         }
     }
 #endif

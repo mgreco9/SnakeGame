@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Snake.Source.Control;
 using Snake.Source.Graphic;
 using Snake.Source.State;
+using System.Diagnostics;
 
 namespace Snake
 {
@@ -20,6 +21,8 @@ namespace Snake
 
         public const int SCREEN_WIDTH = 800;
         public const int SCREEN_HEIGHT = 800;
+
+        public string controllerOpt { get; set; }
 
         public MainGame()
         {
@@ -58,7 +61,8 @@ namespace Snake
             drawer.spriteFont = Content.Load<SpriteFont>(@"Fonts\Arial");
             drawer.LoadContent(GraphicsDevice);
 
-            currentGameState = new GridState();
+            SnakeController controller = SnakeFactory.getSnakeController(controllerOpt);
+            currentGameState = new GridState(controller);
         }
 
         /// <summary>

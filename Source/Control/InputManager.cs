@@ -10,16 +10,8 @@ namespace Snake.Source.Control
 {
     public class InputManager
     {
-        private KeyboardState _prevKeyState;
-        private KeyboardState _currentKeyState;
-
-        public enum Direction
-        {
-            UP,
-            RIGHT,
-            DOWN,
-            LEFT
-        }
+        protected KeyboardState _prevKeyState;
+        protected KeyboardState _currentKeyState;
 
         public Direction inputDirection;
 
@@ -29,7 +21,7 @@ namespace Snake.Source.Control
         public bool inputDecreaseTime;
 
         //Singleton class
-        private static InputManager _instance;
+        protected static InputManager _instance;
         
         public static InputManager Instance
         {
@@ -42,7 +34,7 @@ namespace Snake.Source.Control
         }
 
 
-        private InputManager()
+        protected InputManager()
         {
 
         }
@@ -58,7 +50,7 @@ namespace Snake.Source.Control
             getInputDecreaseTime();
         }
 
-        private void getInputDirection()
+        protected virtual void getInputDirection()
         {
             if (_currentKeyState.IsKeyDown(Keys.Up))
                 inputDirection = Direction.UP;
@@ -70,7 +62,7 @@ namespace Snake.Source.Control
                 inputDirection = Direction.LEFT;
         }
 
-        private void getInputReset()
+        protected virtual void getInputReset()
         {
             if (_currentKeyState.IsKeyDown(Keys.Enter) && _prevKeyState.IsKeyUp(Keys.Enter))
                 inputReset = true;
@@ -78,17 +70,17 @@ namespace Snake.Source.Control
                 inputReset = false;
         }
 
-        public void getInputIncreaseTime()
+        protected virtual void getInputIncreaseTime()
         {
             if (_currentKeyState.IsKeyDown(Keys.NumPad1) && _prevKeyState.IsKeyUp(Keys.NumPad1))
                 inputIncreaseTime = true;
             else
                 inputIncreaseTime = false;
 
-            Trace.TraceInformation($"{inputIncreaseTime}");
+            //Trace.TraceInformation($"{inputIncreaseTime}");
         }
 
-        public void getInputDecreaseTime()
+        protected virtual void getInputDecreaseTime()
         {
             if (_currentKeyState.IsKeyDown(Keys.NumPad0) && _prevKeyState.IsKeyUp(Keys.NumPad0))
                 inputDecreaseTime = true;

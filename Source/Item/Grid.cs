@@ -21,7 +21,7 @@ namespace Snake.Source.Item
 
         SortedSet<GridCoordinate> freeSpace; // Cells with no snake
 
-        public Snake snake;
+        public Snakey snake;
         public Apple apple;
 
         public Grid(GridState state)
@@ -34,12 +34,6 @@ namespace Snake.Source.Item
         /// </summary>
         public void InitializeGrid()
         {
-            snake = new Snake(this);
-            apple = new Apple(this);
-
-            snake.BodySize = (int)(CellSize - 5);
-            apple.AppleSize = (int)(CellSize - 5);
-
             freeSpace = new SortedSet<GridCoordinate>(new GridCoordinateComparer());
             LinkedList<GridCoordinate> snakeBody = new LinkedList<GridCoordinate>();
 
@@ -58,6 +52,7 @@ namespace Snake.Source.Item
                 snakeBody.AddFirst(coord);
             }
 
+            snake.CurrDirection = Control.Direction.RIGHT;
             snake.Body = snakeBody;
 
             apple.ResetPosition(freeSpace);

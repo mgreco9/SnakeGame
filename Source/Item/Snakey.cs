@@ -9,18 +9,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Snake.Source.Control.InputManager;
 
 namespace Snake.Source.Item
 {
-    public class Snake
+    public class Snakey
     {
         Grid gridWorld;
 
         Drawer drawer;
-        InputManager inputManager;
-        Direction currDirection;
 
+        public SnakeController Controller { get; set; }
+        public Direction CurrDirection { get; set; }
         public LinkedList<GridCoordinate> Body { get; set; }
         public int BodySize { get; set; }
 
@@ -40,25 +39,22 @@ namespace Snake.Source.Item
             }
         }
 
-        public Snake(Grid grid)
+        public Snakey(Grid grid)
         {
             gridWorld = grid;
 
             drawer = Drawer.Instance;
-            inputManager = InputManager.Instance;
-
-            currDirection = Direction.RIGHT;
         }
 
         public void Update()
         {
             // 1 - Get next move
-            Direction inputDirection = inputManager.inputDirection;
+            Direction inputDirection = Controller.getDirection();
 
             // 2 - Check if legal move, if not go straight
             bool isLegalMove = CheckIfLegalMove(inputDirection);
             if (isLegalMove)
-                currDirection = inputDirection;
+                CurrDirection = inputDirection;
 
             // 3 - Compute next position
             GridCoordinate nextPosition = ComputeNextPosition();
@@ -93,13 +89,13 @@ namespace Snake.Source.Item
         private bool CheckIfLegalMove(Direction inputDirection)
         {
             // The snake cannot turn back in one command
-            if (currDirection == Direction.UP && inputDirection == Direction.DOWN)
+            if (CurrDirection == Direction.UP && inputDirection == Direction.DOWN)
                 return false;
-            if (currDirection == Direction.DOWN && inputDirection == Direction.UP)
+            if (CurrDirection == Direction.DOWN && inputDirection == Direction.UP)
                 return false;
-            if (currDirection == Direction.LEFT && inputDirection == Direction.RIGHT)
+            if (CurrDirection == Direction.LEFT && inputDirection == Direction.RIGHT)
                 return false;
-            if (currDirection == Direction.RIGHT && inputDirection == Direction.LEFT)
+            if (CurrDirection == Direction.RIGHT && inputDirection == Direction.LEFT)
                 return false;
 
             return true;
@@ -114,7 +110,7 @@ namespace Snake.Source.Item
             GridCoordinate headPosition = Head;
             GridCoordinate nextPosition = new GridCoordinate();
 
-            switch (currDirection)
+            switch (CurrDirection)
             {
                 case Direction.UP:
                     nextPosition.row = headPosition.row-1;

@@ -40,7 +40,23 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Snake2|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Snake2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Control\AIControl\AStarPathfinder.cs" />
+    <Compile Include="Source\Control\AIControl\ClosestCellToApple.cs" />
+    <Compile Include="Source\Control\AIControl\GoStraight.cs" />
+    <Compile Include="Source\Control\KeyboardControl\KeyboardController.cs" />
+    <Compile Include="Source\Control\SnakeController.cs" />
+    <Compile Include="Source\Control\Direction.cs" />
     <Compile Include="Source\Graphic\Drawer.cs" />
     <Compile Include="Source\Control\InputManager.cs" />
     <Compile Include="MainGame.cs" />
@@ -49,13 +65,16 @@
     <Compile Include="Source\Item\Apple.cs" />
     <Compile Include="Source\Item\Grid.cs" />
     <Compile Include="Source\Item\GridCoordinate.cs" />
-    <Compile Include="Source\Item\Snake.cs" />
+    <Compile Include="Source\Item\Snakey.cs" />
     <Compile Include="Source\State\GridState.cs" />
     <Compile Include="Source\State\IGameState.cs" />
     <Compile Include="Source\Util\FigureMaker.cs" />
     <Compile Include="Source\Util\GridCoordinateComparer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>packages\CommandLineParser.2.8.0\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -68,6 +87,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Fonts\" />

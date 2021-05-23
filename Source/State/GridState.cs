@@ -28,7 +28,7 @@ namespace Snake.Source.State
 
         public bool gameOver { get; set; }
 
-        public GridState()
+        public GridState(SnakeController controller)
         {
             inputManager = InputManager.Instance;
             drawer = Drawer.Instance;
@@ -37,8 +37,23 @@ namespace Snake.Source.State
             {
                 Width = GRID_WIDTH,
                 Height = GRID_HEIGHT,
-                CellSize = CELL_SIZE
+                CellSize = CELL_SIZE,
             };
+
+            grid.snake = new Snakey(grid)
+            {
+                BodySize = (int)(CELL_SIZE - 5),
+                Controller = controller
+            };
+
+            grid.apple = new Apple(grid)
+            {
+                AppleSize = (int)(CELL_SIZE - 5)
+            };
+
+            controller.snake = grid.snake;
+            controller.apple = grid.apple;
+
             grid.InitializeGrid();
 
             gameOver = false;
@@ -55,7 +70,7 @@ namespace Snake.Source.State
             bool inputIncreaseTime = inputManager.inputIncreaseTime;
             bool inputDecreaseTime = inputManager.inputDecreaseTime;
 
-            if(!gameOver && elapsedTime > updateInterval)
+            if(!gameOver && elapsedTime >= updateInterval)
             {
                 prevUpdateTimeSpan = currTime;
                 grid.Update();
@@ -67,7 +82,7 @@ namespace Snake.Source.State
                 gameOver = false;
             }
 
-            if (inputIncreaseTime && updateInterval > increaseDecreaseInterval)
+            if (inputIncreaseTime && updateInterval > TimeSpan.Zero)
                 updateInterval -= increaseDecreaseInterval;
             if (inputDecreaseTime)
                 updateInterval += increaseDecreaseInterval;
