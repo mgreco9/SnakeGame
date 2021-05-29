@@ -70,6 +70,7 @@
     <Compile Include="Source\State\IGameState.cs" />
     <Compile Include="Source\Util\FigureMaker.cs" />
     <Compile Include="Source\Util\GridCoordinateComparer.cs" />
+    <Compile Include="Source\Util\PathFinding\AStarSearch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
@@ -77,6 +78,9 @@
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PriorityQueue, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5e136dbf0437dacd, processorArchitecture=MSIL">
+      <HintPath>packages\OptimizedPriorityQueue.5.1.0\lib\net45\PriorityQueue.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

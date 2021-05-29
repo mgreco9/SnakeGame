@@ -17,6 +17,7 @@ namespace Snake.Source.Item
         Grid gridWorld;
 
         Drawer drawer;
+        public Color Color { get; set; }
 
         public SnakeController Controller { get; set; }
         public Direction CurrDirection { get; set; }
@@ -31,7 +32,7 @@ namespace Snake.Source.Item
             }
         }
 
-        GridCoordinate Tail
+        public GridCoordinate Tail
         {
             get
             {
@@ -44,6 +45,8 @@ namespace Snake.Source.Item
             gridWorld = grid;
 
             drawer = Drawer.Instance;
+
+            Color = Color.White;
         }
 
         public void Update()
@@ -108,25 +111,21 @@ namespace Snake.Source.Item
         private GridCoordinate ComputeNextPosition()
         {
             GridCoordinate headPosition = Head;
-            GridCoordinate nextPosition = new GridCoordinate();
+            GridCoordinate nextPosition;
 
             switch (CurrDirection)
             {
                 case Direction.UP:
-                    nextPosition.row = headPosition.row-1;
-                    nextPosition.col = headPosition.col;
+                    nextPosition = new GridCoordinate(headPosition.Row - 1, headPosition.Col);
                     break;
                 case Direction.RIGHT:
-                    nextPosition.row = headPosition.row;
-                    nextPosition.col = headPosition.col+1;
+                    nextPosition = new GridCoordinate(headPosition.Row, headPosition.Col + 1);
                     break;
                 case Direction.DOWN:
-                    nextPosition.row = headPosition.row+1;
-                    nextPosition.col = headPosition.col;
+                    nextPosition = new GridCoordinate(headPosition.Row + 1, headPosition.Col);
                     break;
                 case Direction.LEFT:
-                    nextPosition.row = headPosition.row;
-                    nextPosition.col = headPosition.col-1;
+                    nextPosition = new GridCoordinate(headPosition.Row, headPosition.Col - 1);
                     break;
                 default:
                     throw new Exception("illegal direction");
@@ -147,13 +146,13 @@ namespace Snake.Source.Item
                 return true;
 
             // if goes out of grid bounds, game over
-            if (nextPosition.row < 0)
+            if (nextPosition.Row < 0)
                 return true;
-            if (nextPosition.col < 0)
+            if (nextPosition.Col < 0)
                 return true;
-            if (nextPosition.row >= gridWorld.Height)
+            if (nextPosition.Row >= gridWorld.Height)
                 return true;
-            if (nextPosition.col >= gridWorld.Width)
+            if (nextPosition.Col >= gridWorld.Width)
                 return true;
 
             return false;
@@ -218,7 +217,7 @@ namespace Snake.Source.Item
 
                 line = FigureMaker.MakeLine(p1, p2, BodySize);
 
-                drawer.DrawRectangle(line, Color.White);
+                drawer.DrawRectangle(line, Color);
 
                 prevCell = currCell;
             }

@@ -51,6 +51,7 @@ namespace Snake.Source.State
                 AppleSize = (int)(CELL_SIZE - 5)
             };
 
+            controller.grid = grid;
             controller.snake = grid.snake;
             controller.apple = grid.apple;
 

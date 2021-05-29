@@ -19,13 +19,13 @@ namespace Snake.Source.Control.AIControl
             GridCoordinate snake_loc = snake.Head;
             GridCoordinate apple_loc = apple.Position;
 
-            if (snake_loc.col < apple_loc.col)
+            if (snake_loc.Col < apple_loc.Col)
                 return tryToGoRight();
-            if (snake_loc.col > apple_loc.col)
+            if (snake_loc.Col > apple_loc.Col)
                 return tryToGoLeft();
-            if (snake_loc.row < apple_loc.row)
+            if (snake_loc.Row < apple_loc.Row)
                 return tryToGoDown();
-            if (snake_loc.row > apple_loc.row)
+            if (snake_loc.Row > apple_loc.Row)
                 return tryToGoUp();
 
             return Direction.DOWN;

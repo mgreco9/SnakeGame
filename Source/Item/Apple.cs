@@ -30,7 +30,7 @@ namespace Snake.Source.Item
             drawer = Drawer.Instance;
         }
 
-        public void ResetPosition(SortedSet<GridCoordinate> freeSpace)
+        public void ResetPosition(HashSet<GridCoordinate> freeSpace)
         {
             int idx = rand.Next(freeSpace.Count);
             Position = freeSpace.ElementAt(idx);

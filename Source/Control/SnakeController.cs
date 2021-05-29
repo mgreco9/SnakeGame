@@ -13,6 +13,7 @@ namespace Snake.Source.Control
     {
         public Apple apple { get; set; }
         public Snakey snake { get; set; }
+        public Grid grid { get; set; }
 
         public abstract Direction getDirection();
     }

@@ -19,8 +19,8 @@ namespace Snake.Source.Util
 
         public int Compare(GridCoordinate x, GridCoordinate y)
         {
-            int value1 = (int)(x.col * WIDTH + x.row);
-            int value2 = (int)(y.col * WIDTH + y.row);
+            int value1 = (int)(x.Col * WIDTH + x.Row);
+            int value2 = (int)(y.Col * WIDTH + y.Row);
 
             return value1 - value2;
         }

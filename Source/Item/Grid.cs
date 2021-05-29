@@ -19,7 +19,7 @@ namespace Snake.Source.Item
 
         private GridState state;
 
-        SortedSet<GridCoordinate> freeSpace; // Cells with no snake
+        public HashSet<GridCoordinate> freeSpace; // Cells with no snake
 
         public Snakey snake;
         public Apple apple;
@@ -34,7 +34,7 @@ namespace Snake.Source.Item
         /// </summary>
         public void InitializeGrid()
         {
-            freeSpace = new SortedSet<GridCoordinate>(new GridCoordinateComparer());
+            freeSpace = new HashSet<GridCoordinate>();
             LinkedList<GridCoordinate> snakeBody = new LinkedList<GridCoordinate>();
 
             for(uint row = 0; row < Height; row++)
@@ -98,8 +98,8 @@ namespace Snake.Source.Item
         {
             Point point = new Point
             {
-                X = (int)(gridCoordinate.col * CellSize + CellSize / 2),
-                Y = (int)(gridCoordinate.row * CellSize + CellSize / 2)
+                X = (int)(gridCoordinate.Col * CellSize + CellSize / 2),
+                Y = (int)(gridCoordinate.Row * CellSize + CellSize / 2)
             };
 
             return point;
