@@ -15,9 +15,14 @@ namespace Snake.Source.Control.KeyboardControl
             inputManager = InputManager.Instance;
         }
 
-        public override Direction getDirection()
+        public override Direction GetDirection()
         {
             return inputManager.inputDirection;
+        }
+
+        public override void Draw()
+        {
+
         }
     }
 }

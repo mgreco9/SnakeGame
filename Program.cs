@@ -1,5 +1,8 @@
 ﻿using System;
 using CommandLine;
+using CommandLine.Text;
+using Snake.Source.Control;
+using Snake.Source.Option;
 
 namespace Snake
 {
@@ -9,17 +12,15 @@ namespace Snake
     /// </summary>
     public static class Program
     {
-        private static string _controllerOpt;
-
         public class Options
         {
-            [Option('c', "control", Required = false, HelpText = "Define which AI to use")]
-            public string AIName { get; set; }
+            [Option('c', "control", Required = true, HelpText = "Define which AI to use")]
+            public ControllerType AIName { get; set; }
         }
 
         static void RunOptions(Options opts)
         {
-            _controllerOpt = opts.AIName;
+            GameOptions.controller = opts.AIName;
         }
 
         /// <summary>
@@ -28,13 +29,15 @@ namespace Snake
         [STAThread]
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(RunOptions);
-
-            var game = new MainGame()
+            Parser parser = new Parser(with =>
             {
-                controllerOpt = _controllerOpt
-            };
+                with.CaseInsensitiveEnumValues = true;
+            });
+
+            parser.ParseArguments<Options>(args)
+                .WithParsed<Options>(options => RunOptions(options));
+
+            var game = new MainGame();
             game.Run();
         }
     }

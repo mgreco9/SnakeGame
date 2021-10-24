@@ -1,4 +1,5 @@
-﻿using Snake.Source.State;
+﻿using Snake.Source.Option;
+using Snake.Source.State;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Snake.Source.Item
 {
-    public class GridCoordinate : Tuple<uint, uint>
+    public class GridCoordinate : Tuple<int, int>
     {
-        public uint Row
+        public int Row
         {
             get
             {
                 return Item1;
             }
         }
-        public uint Col
+        public int Col
         {
             get
             {
@@ -24,7 +25,7 @@ namespace Snake.Source.Item
             }
         }
 
-        public GridCoordinate(uint row, uint col)
+        public GridCoordinate(int row, int col)
             :base(row,col)
         {
         }
@@ -43,7 +44,7 @@ namespace Snake.Source.Item
 
         public override int GetHashCode()
         {
-            int hashCode = (int)(GridState.GRID_WIDTH * Col + Row);
+            int hashCode = (int)(GameOptions.NB_ROW * Col + Row);
 
             return hashCode;
         }

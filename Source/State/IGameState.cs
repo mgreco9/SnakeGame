@@ -10,7 +10,7 @@ namespace Snake.Source.State
 {
     public interface IGameState
     {
-        void Update(GameTime gameTime);
+        State Update(GameTime gameTime);
 
         void Draw();
     }

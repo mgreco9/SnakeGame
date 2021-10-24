@@ -1,5 +1,7 @@
-﻿using Snake.Source.Control.AIControl;
+﻿using Microsoft.Xna.Framework;
+using Snake.Source.Control.AIControl;
 using Snake.Source.Control.KeyboardControl;
+using Snake.Source.Graphic;
 using Snake.Source.Item;
 using System;
 using System.Collections.Generic;
@@ -15,33 +17,13 @@ namespace Snake.Source.Control
         public Snakey snake { get; set; }
         public Grid grid { get; set; }
 
-        public abstract Direction getDirection();
-    }
+        public virtual void Initialize(){}
 
-    public class SnakeFactory
-    {
-        public static SnakeController getSnakeController(string controllerName)
-        {
-            SnakeController controller = null;
+        public abstract Direction GetDirection();
 
-            switch (controllerName)
-            {
-                case "GoStraight":
-                    controller = new GoStraight();
-                    break;
-                case "ClosestCellToApple":
-                    controller = new ClosestCellToApple();
-                    break;
-                case "AStarPathfinder":
-                    controller = new AStarPathfinder();
-                    break;
-                default:
-                    controller = new KeyboardController();
-                    break;
+        protected Drawer drawer = Drawer.Instance;
+        public Color color = Color.LightGray;
 
-            }
-
-            return controller;
-        }
+        public abstract void Draw();
     }
 }

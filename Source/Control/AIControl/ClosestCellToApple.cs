@@ -9,7 +9,7 @@ namespace Snake.Source.Control.AIControl
 {
     class ClosestCellToApple : SnakeController
     {
-        public override Direction getDirection()
+        public override Direction GetDirection()
         {
             return computeDirection();
         }
@@ -61,6 +61,10 @@ namespace Snake.Source.Control.AIControl
                 return Direction.RIGHT;
 
             return Direction.UP;
+        }
+
+        public override void Draw()
+        {
         }
     }
 }

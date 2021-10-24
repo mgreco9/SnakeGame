@@ -54,6 +54,9 @@
     <Compile Include="Source\Control\AIControl\AStarPathfinder.cs" />
     <Compile Include="Source\Control\AIControl\ClosestCellToApple.cs" />
     <Compile Include="Source\Control\AIControl\GoStraight.cs" />
+    <Compile Include="Source\Control\AIControl\HamiltonianAStar.cs" />
+    <Compile Include="Source\Control\AIControl\HamiltonianPath.cs" />
+    <Compile Include="Source\Control\ControllerFactory.cs" />
     <Compile Include="Source\Control\KeyboardControl\KeyboardController.cs" />
     <Compile Include="Source\Control\SnakeController.cs" />
     <Compile Include="Source\Control\Direction.cs" />
@@ -66,11 +69,18 @@
     <Compile Include="Source\Item\Grid.cs" />
     <Compile Include="Source\Item\GridCoordinate.cs" />
     <Compile Include="Source\Item\Snakey.cs" />
+    <Compile Include="Source\Option\GameOptions.cs" />
+    <Compile Include="Source\State\GameOverState.cs" />
     <Compile Include="Source\State\GridState.cs" />
     <Compile Include="Source\State\IGameState.cs" />
+    <Compile Include="Source\State\StateFactory.cs" />
+    <Compile Include="Source\State\WinState.cs" />
+    <Compile Include="Source\Util\Container\CircularLinkedList.cs" />
     <Compile Include="Source\Util\FigureMaker.cs" />
     <Compile Include="Source\Util\GridCoordinateComparer.cs" />
     <Compile Include="Source\Util\PathFinding\AStarSearch.cs" />
+    <Compile Include="Source\Util\PathFinding\HamiltonianCycleSearch.cs" />
+    <Compile Include="Source\Util\PathFinding\HamiltonianCycleMerge.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">

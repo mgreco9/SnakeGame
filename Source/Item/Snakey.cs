@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Snake.Source.Control;
 using Snake.Source.Graphic;
+using Snake.Source.Option;
 using Snake.Source.Util;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,21 @@ using System.Threading.Tasks;
 
 namespace Snake.Source.Item
 {
+    public enum SnakeAction
+    {
+        WAIT,
+        MOVE,
+        EAT,
+        DIE,
+        WIN
+    }
+
     public class Snakey
     {
-        Grid gridWorld;
+        readonly Grid grid;
+        readonly Apple apple;
 
-        Drawer drawer;
+        readonly Drawer drawer;
         public Color Color { get; set; }
 
         public SnakeController Controller { get; set; }
@@ -40,19 +51,41 @@ namespace Snake.Source.Item
             }
         }
 
-        public Snakey(Grid grid)
+        public Snakey(Grid grid, Apple apple)
         {
-            gridWorld = grid;
+            this.grid = grid;
+            this.apple = apple;
 
             drawer = Drawer.Instance;
-
             Color = Color.White;
+            BodySize = (int)grid.CellSize - 5;
+
+            InitializeSnakePosition();
         }
 
-        public void Update()
+        private void InitializeSnakePosition()
+        {
+            Body = new LinkedList<GridCoordinate>();
+
+            int middleRow = GameOptions.NB_ROW / 2;
+            int middleCol = GameOptions.NB_COL / 2;
+
+            
+            for (int i  = 0; i<2; i++)
+            {
+                GridCoordinate bodyPart = new GridCoordinate(middleRow, middleCol - i);
+
+                Body.AddLast(bodyPart);
+                grid.RemoveFreeCell(bodyPart);
+            }
+
+            CurrDirection = Direction.RIGHT;
+        }
+
+        public SnakeAction Update()
         {
             // 1 - Get next move
-            Direction inputDirection = Controller.getDirection();
+            Direction inputDirection = Controller.GetDirection();
 
             // 2 - Check if legal move, if not go straight
             bool isLegalMove = CheckIfLegalMove(inputDirection);
@@ -65,23 +98,30 @@ namespace Snake.Source.Item
             // 4 - Check if game over
             bool isGameOver = CheckIfGameOver(nextPosition);
             if (isGameOver)
-            {
-                gridWorld.GameOver();
-            }
+                return SnakeAction.DIE;
 
-            // 5 - Check if eat apple
-            bool eatApple = CheckIfEatApple(nextPosition);
-            if (eatApple)
-            {
-                gridWorld.ResetApplePosition();
-            }
-
-            // 6 - Move head
+            // 5 - Move head
             Move(nextPosition);
 
-            // 7 - Remove tail if didn't eat apple
-            if(!eatApple)
-                RemoveTail();
+            // 6 - Check if win
+            bool eatApple = CheckIfEatApple(nextPosition);
+            if (eatApple && CheckIfWin())
+            {
+                apple.Remove();
+                return SnakeAction.WIN;
+            }
+
+            // 7 - Check if eat apple
+            if (eatApple)
+            {
+                apple.ResetPosition();
+                return SnakeAction.EAT;
+            }
+
+            // 8 - Remove tail if didn't eat apple
+            RemoveTail();
+
+            return SnakeAction.MOVE;
         }
 
         /// <summary>
@@ -150,9 +190,9 @@ namespace Snake.Source.Item
                 return true;
             if (nextPosition.Col < 0)
                 return true;
-            if (nextPosition.Row >= gridWorld.Height)
+            if (nextPosition.Row >= grid.Height)
                 return true;
-            if (nextPosition.Col >= gridWorld.Width)
+            if (nextPosition.Col >= grid.Width)
                 return true;
 
             return false;
@@ -165,7 +205,7 @@ namespace Snake.Source.Item
         /// <returns> Flag showing if the snake is on the apple </returns>
         private bool CheckIfEatApple(GridCoordinate nextPosition)
         {
-            GridCoordinate applePosition = gridWorld.apple.Position;
+            GridCoordinate applePosition = apple.Position;
 
             if (nextPosition.Equals(applePosition))
                 return true;
@@ -173,37 +213,40 @@ namespace Snake.Source.Item
             return false;
         }
 
-        /// <summary>
-        /// Move the snake's head onto the next position
-        /// </summary>
-        /// <param name="nextPosition"> The next computed position of the head </param>
+        private bool CheckIfWin()
+        {
+            if (Body.Count == grid.GridSize)
+                return true;
+
+            return false;
+        }
+
         private void Move(GridCoordinate nextPosition)
         {
             Body.AddFirst(nextPosition);
-
-            gridWorld.RemoveFreeCell(nextPosition);
+            grid.RemoveFreeCell(nextPosition);
         }
 
-        /// <summary>
-        /// Remove the tail of the snake to move its body
-        /// </summary>
         private void RemoveTail()
         {
             GridCoordinate tailPosition = Tail;
-            Body.RemoveLast();
 
-            gridWorld.AddFreeCell(tailPosition);
+            Body.RemoveLast();
+            grid.AddFreeCell(tailPosition);
         }
 
         public void Draw()
         {
+            // Draw path to follow
+            Controller.Draw();
+
             // Draw a line between each part of the body
             Point p1;
             Point p2;
             Rectangle line;
 
             GridCoordinate prevCell = Head;
-            GridCoordinate currCell = null;
+            GridCoordinate currCell;
 
             LinkedListNode<GridCoordinate> currentNode = Body.First;
 
@@ -212,8 +255,8 @@ namespace Snake.Source.Item
                 currentNode = currentNode.Next;
                 currCell = currentNode.Value;
 
-                p1 = gridWorld.gridCoordinateToPoint(prevCell);
-                p2 = gridWorld.gridCoordinateToPoint(currCell);
+                p1 = grid.GridCoordinateToPoint(prevCell);
+                p2 = grid.GridCoordinateToPoint(currCell);
 
                 line = FigureMaker.MakeLine(p1, p2, BodySize);
 

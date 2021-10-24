@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Snake.Source.Control;
 using Snake.Source.Graphic;
+using Snake.Source.Option;
 using Snake.Source.State;
 using System.Diagnostics;
 
@@ -17,19 +18,15 @@ namespace Snake
         SpriteBatch spriteBatch;
 
         private InputManager inputManager;
+        private State currentState;
         private IGameState currentGameState;
-
-        public const int SCREEN_WIDTH = 800;
-        public const int SCREEN_HEIGHT = 800;
-
-        public string controllerOpt { get; set; }
 
         public MainGame()
         {
             graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = SCREEN_WIDTH,
-                PreferredBackBufferHeight = SCREEN_HEIGHT
+                PreferredBackBufferWidth = GameOptions.SCREEN_WIDTH,
+                PreferredBackBufferHeight = GameOptions.SCREEN_HEIGHT
             };
 
             Content.RootDirectory = "Content";
@@ -57,12 +54,12 @@ namespace Snake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Drawer drawer = Drawer.Instance;
+            drawer.graphics = graphics;
             drawer.spriteBatch = spriteBatch;
             drawer.spriteFont = Content.Load<SpriteFont>(@"Fonts\Arial");
-            drawer.LoadContent(GraphicsDevice);
+            drawer.LoadContent();
 
-            SnakeController controller = SnakeFactory.getSnakeController(controllerOpt);
-            currentGameState = new GridState(controller);
+            UpdateGameState(State.IN_GAME);
         }
 
         /// <summary>
@@ -72,11 +69,17 @@ namespace Snake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             inputManager.Update();
-            currentGameState.Update(gameTime);
+            State newState = currentGameState.Update(gameTime);
+
+            if (newState != currentState)
+            {
+                spriteBatch.Begin();
+                currentGameState.Draw();
+                spriteBatch.End();
+
+                UpdateGameState(newState);
+            }
 
             base.Update(gameTime);
         }
@@ -87,13 +90,17 @@ namespace Snake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
             spriteBatch.Begin();
             currentGameState.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void UpdateGameState(State newState)
+        {
+            currentGameState = StateFactory.GetGameState(newState);
+            currentState = newState;
         }
     }
 }

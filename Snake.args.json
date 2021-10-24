@@ -3,16 +3,28 @@
   "Id": "6b2b3f00-4452-4f2b-b8c1-26565a5733f7",
   "Items": [
     {
+      "Id": "943bd0c5-c264-492f-8512-0abf7b3ed8a5",
+      "Command": "-c Keyboard"
+    },
+    {
       "Id": "f46dfd8d-0d41-4602-8b6e-6626bafcadb6",
-      "Command": "-c GoStraight"
+      "Command": "-c Go_Straight"
     },
     {
       "Id": "8dd8f173-4ff1-4d50-a67f-12a67b483bd7",
-      "Command": "-c ClosestCellToApple"
+      "Command": "-c Closest_Cell_To_Apple"
     },
     {
       "Id": "3e989c68-8797-43bb-a689-2000f8d76536",
-      "Command": "-c AStarPathfinder"
+      "Command": "-c A_Star"
+    },
+    {
+      "Id": "05296496-f3db-43de-95d6-8d66d49bc9ac",
+      "Command": "-c Hamiltonian"
+    },
+    {
+      "Id": "98717499-9e8c-477b-93c7-a3d212f32d41",
+      "Command": "-c Hamiltonian_A_Star"
     }
   ]
 }

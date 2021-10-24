@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Snake.Source.Graphic
 {
-    class Drawer
+    public class Drawer
     {
+        public GraphicsDeviceManager graphics { get; set; }
         public SpriteBatch spriteBatch { get; set; }
         public SpriteFont spriteFont { get; set; }
 
@@ -32,25 +33,30 @@ namespace Snake.Source.Graphic
 
         }
 
-        public void LoadContent(GraphicsDevice graphicsDevice)
+        public void LoadContent()
         {
-            pixel = new Texture2D(graphicsDevice, 1, 1);
+            pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
+        }
+
+        public void Clear()
+        {
+            graphics.GraphicsDevice.Clear(Color.Black);
         }
 
         public void DrawRectangle(Rectangle rectangle)
         {
-            spriteBatch.Draw(pixel, rectangle, Color.White);
+            DrawRectangle(pixel, rectangle, Color.White);
         }
 
         public void DrawRectangle(Rectangle rectangle, Color color)
         {
-            spriteBatch.Draw(pixel, rectangle, color);
+            DrawRectangle(pixel, rectangle, color);
         }
 
-        public void DrawRectangle(Rectangle rectangle, Texture2D texture)
+        public void DrawRectangle(Texture2D texture, Rectangle rectangle, Color color)
         {
-            spriteBatch.Draw(texture, rectangle, Color.White);
+            spriteBatch.Draw(texture, rectangle, color);
         }
 
         public void DrawText(String text, Color color)

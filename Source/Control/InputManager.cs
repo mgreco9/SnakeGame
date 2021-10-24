@@ -44,13 +44,13 @@ namespace Snake.Source.Control
             _prevKeyState = _currentKeyState;
             _currentKeyState = Keyboard.GetState();
 
-            getInputDirection();
-            getInputReset();
-            getInputIncreaseTime();
-            getInputDecreaseTime();
+            GetInputDirection();
+            GetInputReset();
+            GetInputIncreaseTime();
+            GetInputDecreaseTime();
         }
 
-        protected virtual void getInputDirection()
+        protected virtual void GetInputDirection()
         {
             if (_currentKeyState.IsKeyDown(Keys.Up))
                 inputDirection = Direction.UP;
@@ -62,7 +62,7 @@ namespace Snake.Source.Control
                 inputDirection = Direction.LEFT;
         }
 
-        protected virtual void getInputReset()
+        protected virtual void GetInputReset()
         {
             if (_currentKeyState.IsKeyDown(Keys.Enter) && _prevKeyState.IsKeyUp(Keys.Enter))
                 inputReset = true;
@@ -70,7 +70,7 @@ namespace Snake.Source.Control
                 inputReset = false;
         }
 
-        protected virtual void getInputIncreaseTime()
+        protected virtual void GetInputIncreaseTime()
         {
             if (_currentKeyState.IsKeyDown(Keys.NumPad1) && _prevKeyState.IsKeyUp(Keys.NumPad1))
                 inputIncreaseTime = true;
@@ -80,7 +80,7 @@ namespace Snake.Source.Control
             //Trace.TraceInformation($"{inputIncreaseTime}");
         }
 
-        protected virtual void getInputDecreaseTime()
+        protected virtual void GetInputDecreaseTime()
         {
             if (_currentKeyState.IsKeyDown(Keys.NumPad0) && _prevKeyState.IsKeyUp(Keys.NumPad0))
                 inputDecreaseTime = true;

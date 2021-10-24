@@ -28,17 +28,27 @@ namespace Snake.Source.Item
             rand = new Random();
 
             drawer = Drawer.Instance;
+            AppleSize = (int)grid.CellSize - 2;
+
+            ResetPosition();
         }
 
-        public void ResetPosition(HashSet<GridCoordinate> freeSpace)
+        public void Remove()
         {
+            Position = new GridCoordinate(-1, -1);
+        }
+
+        public void ResetPosition()
+        {
+            HashSet<GridCoordinate> freeSpace = gridWorld.freeSpace;
+
             int idx = rand.Next(freeSpace.Count);
             Position = freeSpace.ElementAt(idx);
         }
 
         public void Draw()
         {
-            Point p1 = gridWorld.gridCoordinateToPoint(Position);
+            Point p1 = gridWorld.GridCoordinateToPoint(Position);
 
             Rectangle point = FigureMaker.MakePoint(p1, AppleSize);
 
