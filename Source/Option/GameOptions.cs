@@ -14,8 +14,8 @@ namespace Snake.Source.Option
         public static int SCREEN_HEIGHT = 800;
 
         // GRID OPTIONS
-        public static int NB_ROW = 10;
-        public static int NB_COL = 10;
+        public static int NB_ROW = 20;
+        public static int NB_COL = 20;
 
         // CONTROLLER OPTIONS
         public static ControllerType controller;
